@@ -1,0 +1,23 @@
+# `r paste0("Candidate", ": ", x, " (", pronouns, ")")`
+
+## `r responses$question[1]`
+_`r paste0(x, ":")`_ `r responses$answer[1]`
+
+## `r responses$question[2]`
+_`r paste0(x, ":")`_ `r responses$answer[2]`
+
+## `r responses$question[3]`
+_`r paste0(x, ":")`_ `r responses$answer[3]`
+
+## `r responses$question[4]`
+_`r paste0(x, ":")`_ `r responses$answer[4]`
+
+## `r responses$question[5]`
+_`r paste0(x, ":")`_ `r responses$answer[5]`
+
+## `r responses$question[6]`
+_`r paste0(x, ":")`_ `r responses$answer[6]`
+
+## `r responses$question[7]`
+_`r paste0(x, ":")`_ `r responses$answer[7]`
+

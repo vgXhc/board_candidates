@@ -1,0 +1,61 @@
+---
+title: "Board Candidates 2023"
+output: 
+  pdf_document:
+    toc: TRUE
+    toc_depth: 1
+documentclass: scrreport
+---
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse, quietly = T)
+library(googlesheets4)
+googlesheets4::gs4_deauth()
+library(here, quietly = T)
+library(knitr)
+responses <- read_sheet("https://docs.google.com/spreadsheets/d/1vcg5o6j-z8gsGjkOjynmdSrEMu7GoRhWQTwmQjj52nU") %>% 
+  
+                        #         col_names = c("timestamp",
+                        #                       "email",
+                        #                       "name",
+                        #                       "pronouns",
+                        #                       "why_interested",
+                        #                       "what_bring",
+                        #                       "what_focus",
+                        #                       "why_focus",
+                        #                       "board_experience",
+                        #                       "perspective",
+                        #                       "misc",
+                        #                       "available",
+                        #                       "attestation"),
+                        # skip = 1) %>% 
+rename(name = `Your name`,
+       pronouns = `Pronouns (if you would like to share)`) %>% 
+  select(-c(1:2), -c(12:13))
+responses_long <- responses |>
+  pivot_longer(cols = 3:ncol(responses), 
+               names_to = "question", 
+               values_to = "answer") 
+#  rename(name = `Your name`) |> 
+#  mutate(topic = str_extract(question, "^(.*?)\\:"), # everything before the colon
+#         question = if_else(is.na(topic), question, str_remove(question, topic)))
+
+
+```
+
+
+```{r echo=FALSE, results='hide', message=FALSE}
+knit_answer_child <- function(x){
+  responses <- responses_long |> 
+    filter(name == x)
+  pronouns <- responses$pronouns[[1]]
+  knitr::knit_child(
+    'output_child.Rmd', envir = environment(), quiet = TRUE
+  )
+}
+
+```
+
+```{r results='asis', echo=FALSE}
+res <- lapply(responses$name, knit_answer_child)
+cat(unlist(res), sep = '\n')
+```
